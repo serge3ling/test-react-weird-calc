@@ -6,7 +6,7 @@ import "./index.scss";
 class Operand extends React.Component {
 	render() {
 		return (
-			<input type="number" onChange={this.props.onChange}/>
+			<input type="number" onChange={(eve) => this.props.onChange(eve.target.value)}/>
 		);
 	};
 }
@@ -26,26 +26,18 @@ class Calc extends React.Component {
         super(props);
         this.state = {
             primes: (new Primes()),
-            value1: 4,
-            value2: 8
+            value1: 0,
+            value2: 0
         }
     }
 
+    number1Callback = (msg) => { this.setState({value1: msg}); };
+    number2Callback = (msg) => { this.setState({value2: msg}); };
+
 	handleClick() {
-		alert("Clicked.");
-	}
-
-	handleChange1() {
-		console.log("Changed 1.");
-        this.setState({
-            primes: this.state.primes,
-            value1: 5,
-            value2: this.state.value2
-        });
-	}
-
-	handleChange2() {
-		console.log("Changed 2.");
+		const v1 = this.state.value1;
+        const v2 = this.state.value2;
+        console.log("" + v1 + " {highest_prime} " + v2 + " = " + this.state.primes.highestBetween(v1, v2));
 	}
 
 	render() {
@@ -53,18 +45,18 @@ class Calc extends React.Component {
 			<div>
 			<p>
 			<Operand
-                onChange={this.handleChange1}
+                onChange={this.number1Callback}
 			/>
 			</p>
 			<p>
 			<Operand
-                onChange={this.handleChange2}
+                onChange={this.number2Callback}
 			/>
 			</p>
 
 			<p>
 			<Operator
-                onClick={this.handleClick}
+                onClick={() => this.handleClick()}
 			/>
 			</p>
 			</div>
