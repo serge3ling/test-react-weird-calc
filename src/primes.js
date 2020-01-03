@@ -79,6 +79,6 @@ class Primes {
 	}
 }
 
-new Primes().test();
+//new Primes().test();
 
 export default Primes;

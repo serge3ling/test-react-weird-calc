@@ -21,11 +21,23 @@ class Operator extends React.Component {
 	}
 }
 
+class HistoryItem {
+    constructor(counter, value1, operator, value2, result) {
+        this.counter = counter;
+        this.value1 = value1;
+        this.operator = operator;
+        this.value2 = value2;
+        this.result = result;
+    }
+}
+
 class Calc extends React.Component {
 	constructor(props) {
         super(props);
         this.state = {
             primes: (new Primes()),
+            history: [],
+            historyCntr: 0,
             value1: 0,
             value2: 0
         }
@@ -38,11 +50,35 @@ class Calc extends React.Component {
 		const v1 = this.state.value1;
         const v2 = this.state.value2;
         const primes = this.state.primes;
-        console.log("" + v1 + " " + primes.binaryOperatorNotation() + " " + v2 + " = " + primes.highestBetween(v1, v2));
+        const highest = primes.highestBetween(v1, v2);
+
+        if (highest > 1) {
+            let history = this.state.history;
+            const historyCntr = this.state.historyCntr + 1;
+            history.push(new HistoryItem(historyCntr, v1, primes.binaryOperatorNotation(), v2, highest));
+            this.setState({
+                historyCntr: historyCntr,
+                history: history
+            });
+        } else {
+            alert("No prime number between " + v1 + " and " + v2 + ".");
+        }
 	}
 
 	render() {
-		return (
+		const operations = this.state.history.map((item) => {
+            return (
+                <tr key={item.counter}>
+                <td>{item.value1}</td>
+                <td>{item.operator}</td>
+                <td>{item.value2}</td>
+                <td>=</td>
+                <td>{item.result}</td>
+                </tr>
+            );
+        });
+
+        return (
 			<div>
 			<p>
 			<Operand
@@ -60,6 +96,12 @@ class Calc extends React.Component {
                 onClick={() => this.handleClick()}
 			/>
 			</p>
+
+            <table>
+            <tbody>
+            {operations}
+            </tbody>
+            </table>
 			</div>
 		); // return
 	}; // render
