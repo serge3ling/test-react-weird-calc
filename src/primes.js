@@ -6,22 +6,19 @@ class Primes {
 	// low must be lower than high. high must be less than the last.
     // highestBetween() makes it ready right.
 	fetchHighestBetween(low, high) {
-		var lowPrimeIndex = 0;
 		var highPrime = -1;
 
 		var index = 0;
-		while (low >= this.numbers[index]) {
-			lowPrimeIndex = index;
-			index++;
-		}
+        while (high >= this.numbers[index]) {
+            highPrime = this.numbers[index];
+            index++;
+        }
 
-		if (lowPrimeIndex >= 0) {
-			index = lowPrimeIndex;
-			while (high >= this.numbers[index]) {
-				highPrime = this.numbers[index];
-				index++;
-			}
-		}
+        if (highPrime > 1) {
+            if (low > highPrime) {
+                highPrime = -1;
+            }
+        }
 
 		return highPrime;
 	}
@@ -69,7 +66,7 @@ class Primes {
     }
 
     printTest(v1, v2) {
-        return ("(Primes test) " + v1 + this.binaryOperatorNotation() + v2 + " = " + this.highestBetween(v1, v2));
+        return ("" + v1 + this.binaryOperatorNotation() + v2 + " = " + this.highestBetween(v1, v2));
     }
 
 	test() {
